@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ideal Hair Products – Vegan & Organic Hair Care Ghana</title>
+  <meta name="description" content="Premium vegan, organic, cruelty-free hair care. FDA vetted and approved. Made in Ghana." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- ✅ YOUR STYLESHEET -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAVIGATION BAR
+══════════════════════════════════════ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo" onclick="showPage('home')">
+      <div class="logo-mark">IH</div>
+      <div class="logo-words">
+        <span class="logo-main">Ideal Hair</span>
+        <span class="logo-sub">Vegan · Organic · Ghana</span>
+      </div>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" class="nav-link active" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" class="nav-link"        onclick="showPage('products')">Products</a></li>
+      <li><a href="#" class="nav-link"        onclick="showPage('about')">About</a></li>
+      <li><a href="#" class="nav-link"        onclick="showPage('reviews')">Reviews</a></li>
+      <li><a href="#" class="nav-link"        onclick="showPage('contact')">Contact</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <button class="cart-trigger" id="cartTrigger" onclick="openCart()" aria-label="Open Cart">
+        <span>🛒</span>
+        <span class="cart-label">Cart</span>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <button class="hamburger" id="hamburger" onclick="openMob()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Drawer -->
+<div class="mob-drawer" id="mobDrawer">
+  <button class="mob-close" onclick="closeMob()">✕</button>
+  <ul>
+    <li><a href="#" onclick="showPage('home');    closeMob()">Home</a></li>
+    <li><a href="#" onclick="showPage('products');closeMob()">Products</a></li>
+    <li><a href="#" onclick="showPage('about');   closeMob()">About</a></li>
+    <li><a href="#" onclick="showPage('reviews'); closeMob()">Reviews</a></li>
+    <li><a href="#" onclick="showPage('contact'); closeMob()">Contact</a></li>
+  </ul>
+  <button class="btn-gold full-w" onclick="openCart();closeMob()">🛒 View Cart (<span id="mobCartCount">0</span>)</button>
+</div>
+<div class="mob-overlay" id="mobOverlay" onclick="closeMob()"></div>
+
+
+<!-- ══════════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-bg-shapes">
+      <div class="hbs hbs1"></div>
+      <div class="hbs hbs2"></div>
+      <div class="hbs hbs3"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-copy animate-up">
+        <div class="pill-tag">✦ FDA Vetted &amp; Approved</div>
+        <h1 class="hero-title">Hair Care Born<br/><em>From Nature</em></h1>
+        <p class="hero-sub">100% vegan, organic &amp; cruelty-free products rooted in West African botanical tradition. Your hair deserves the very best.</p>
+        <div class="trust-pills">
+          <div class="trust-pill"><span class="dot green"></span>Vegan</div>
+          <div class="trust-pill"><span class="dot gold"></span>100% Organic</div>
+          <div class="trust-pill"><span class="dot pink"></span>Cruelty-Free</div>
+          <div class="trust-pill"><span class="dot blue"></span>FDA Approved</div>
+        </div>
+        <div class="hero-ctas">
+          <button class="btn-gold large" onclick="showPage('products')">Shop Products</button>
+          <button class="btn-ghost" onclick="showPage('about')">Our Story →</button>
+        </div>
+      </div>
+      <div class="hero-card-wrap animate-right">
+        <div class="hero-card">
+          <div class="hc-emoji">🌿</div>
+          <h3>African Botanicals</h3>
+          <p>Shea butter, lanolin oil &amp; natural extracts in every bottle</p>
+          <div class="hc-stats">
+            <div class="hcs"><div class="hcs-n">10+</div><div class="hcs-l">Products</div></div>
+            <div class="hcs"><div class="hcs-n">100%</div><div class="hcs-l">Organic</div></div>
+            <div class="hcs"><div class="hcs-n">FDA</div><div class="hcs-l">Approved</div></div>
+            <div class="hcs"><div class="hcs-n">0</div><div class="hcs-l">Chemicals</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features strip -->
+  <div class="features-strip">
+    <div class="feat"><div class="feat-ico">🌱</div><div><strong>100% Organic</strong><p>No parabens, sulfates or artificial fragrances</p></div></div>
+    <div class="feat"><div class="feat-ico">🚚</div><div><strong>Nationwide Delivery</strong><p>Fast delivery across all regions of Ghana</p></div></div>
+    <div class="feat"><div class="feat-ico">🏥</div><div><strong>FDA Approved</strong><p>Every product vetted for safety &amp; quality</p></div></div>
+    <div class="feat"><div class="feat-ico">💚</div><div><strong>Cruelty Free</strong><p>Never tested on animals. Ever.</p></div></div>
+  </div>
+
+  <!-- Featured products -->
+  <div class="section-wrap">
+    <div class="section-head animate-up">
+      <div class="pill-tag green">✦ Top Sellers</div>
+      <h2>Customer Favourites</h2>
+      <p>Our most-loved products, trusted by thousands across Ghana and beyond.</p>
+    </div>
+    <div class="products-grid" id="homeFeaturedGrid"></div>
+    <div class="center-btn">
+      <button class="btn-gold" onclick="showPage('products')">See All Products →</button>
+    </div>
+  </div>
+
+  <!-- Scrolling review strip -->
+  <div class="mini-review-strip">
+    <div class="mrs-track" id="miniReviewTrack"></div>
+  </div>
+
+  <!-- CTA Banner -->
+  <div class="cta-banner">
+    <div class="cta-inner animate-up">
+      <div class="cta-leaf">🍃</div>
+      <h2>Ready to Transform Your Hair?</h2>
+      <p>Join thousands of happy customers who've discovered the power of organic hair care.</p>
+      <button class="btn-gold large" onclick="showPage('products')">Shop Now — Free Delivery on GH₵150+</button>
+    </div>
+  </div>
+
+</div><!-- /page-home -->
+
+
+<!-- ══════════════════════════════════════
+     PAGE: PRODUCTS
+══════════════════════════════════════ -->
+<div id="page-products" class="page">
+
+  <div class="page-hero green-hero">
+    <div class="animate-up">
+      <div class="pill-tag light">✦ Our Collection</div>
+      <h1>Ideal Hair Products</h1>
+      <p>Crafted with organic ingredients to nourish, strengthen &amp; beautify every hair type.</p>
+    </div>
+  </div>
+
+  <div class="section-wrap">
+    <div class="shop-controls animate-up">
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" id="searchInput" placeholder="Search products…" oninput="handleSearch()" />
+      </div>
+      <div class="filter-bar" id="filterBar"></div>
+      <select id="sortSelect" class="sort-sel" onchange="handleSort()">
+        <option value="default">Sort: Default</option>
+        <option value="price-asc">Price: Low → High</option>
+        <option value="price-desc">Price: High → Low</option>
+        <option value="name">Name A–Z</option>
+      </select>
+    </div>
+    <p class="results-label" id="resultsCount"></p>
+    <div class="products-grid" id="productsGrid"></div>
+  </div>
+
+</div><!-- /page-products -->
+
+
+<!-- ══════════════════════════════════════
+     PAGE: ABOUT
+══════════════════════════════════════ -->
+<div id="page-about" class="page">
+
+  <div class="page-hero dark-hero">
+    <div class="animate-up">
+      <div class="pill-tag gold">✦ Our Story</div>
+      <h1>Made With Purpose,<br/>Rooted in Tradition</h1>
+      <p>Bringing West African hair wisdom to the modern world — organically.</p>
+    </div>
+  </div>
+
+  <div class="section-wrap">
+
+    <!-- Story block -->
+    <div class="about-story animate-up">
+      <div class="story-text">
+        <h2>Why Ideal Hair?</h2>
+        <p>Ideal Hair Products was born from a deep love for natural beauty and African hair care traditions passed down through generations. We saw a gap — premium organic products that truly celebrate the diversity and beauty of African hair — and we filled it.</p>
+        <p>Every bottle carries the wisdom of our ancestors and the precision of modern science. From our iconic African Shea Butter to our nourishing Gold Shampoo, we believe your hair deserves ingredients as pure as nature intended.</p>
+        <p>Made in Ghana 🇬🇭, loved worldwide.</p>
+        <ul class="about-checklist">
+          <li><span class="chk">✓</span>No parabens, sulfates, or artificial fragrances</li>
+          <li><span class="chk">✓</span>Rich in vitamins, proteins &amp; natural oils</li>
+          <li><span class="chk">✓</span>Suitable for all hair types and textures</li>
+          <li><span class="chk">✓</span>Made and packaged in Kumasi, Ghana</li>
+        </ul>
+      </div>
+      <div class="story-tiles">
+        <div class="st green-tile"><div class="st-ico">🌿</div><h4>100% Organic</h4><p>No parabens, sulfates or artificial fragrances — ever.</p></div>
+        <div class="st gold-tile"><div class="st-ico">🐾</div><h4>Cruelty-Free</h4><p>Never tested on animals. We love all living creatures.</p></div>
+        <div class="st pale-tile"><div class="st-ico">🌍</div><h4>African Botanicals</h4><p>Inspired by generations of West African hair wisdom.</p></div>
+        <div class="st white-tile"><div class="st-ico">✅</div><h4>FDA Approved</h4><p>Vetted &amp; approved for safety and quality.</p></div>
+      </div>
+    </div>
+
+    <!-- Values -->
+    <div class="section-head animate-up">
+      <div class="pill-tag green">✦ Our Values</div>
+      <h2>What Drives Us</h2>
+    </div>
+    <div class="values-grid" id="valuesGrid"></div>
+
+    <!-- Brand Promise -->
+    <div class="promise-block animate-up">
+      <p>"We promise that every product we make is something we'd proudly use on our own hair — and our children's."</p>
+      <span>— The Ideal Hair Team, Kumasi, Ghana</span>
+    </div>
+
+    <!-- Ingredients -->
+    <div class="section-head animate-up" style="margin-top:80px">
+      <div class="pill-tag green">✦ Key Ingredients</div>
+      <h2>Nature's Best, In Every Bottle</h2>
+      <p>Each ingredient is chosen for a specific benefit to your hair and scalp.</p>
+    </div>
+    <div class="ingredients-grid" id="ingredientsGrid"></div>
+
+  </div>
+</div><!-- /page-about -->
+
+
+<!-- ══════════════════════════════════════
+     PAGE: REVIEWS
+══════════════════════════════════════ -->
+<div id="page-reviews" class="page">
+
+  <div class="page-hero reviews-hero">
+    <div class="animate-up">
+      <div class="pill-tag gold">✦ Customer Love</div>
+      <h1>Real Stories,<br/>Real Results</h1>
+      <p>Thousands of happy customers across Ghana trust Ideal Hair every day.</p>
+      <div class="rating-hero">
+        <div class="rh-stars">★★★★★</div>
+        <div class="rh-label"><strong>4.9 / 5</strong> from 1,200+ reviews</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-wrap">
+
+    <!-- Stats bar -->
+    <div class="review-stats-bar animate-up" id="reviewStatsBar"></div>
+
+    <!-- Filter tabs -->
+    <div class="review-tabs animate-up" id="reviewTabs"></div>
+
+    <!-- Grid -->
+    <div class="reviews-grid" id="reviewsGrid"></div>
+
+    <!-- Write review -->
+    <div class="write-review-wrap animate-up">
+      <div class="section-head">
+        <div class="pill-tag green">✦ Share Your Experience</div>
+        <h2>Leave a Review</h2>
+        <p>Your feedback helps other customers and helps us improve.</p>
+      </div>
+      <form class="review-form" id="reviewForm" onsubmit="submitReview(event)">
+        <div class="rf-row">
+          <div class="rf-g"><label>Your Name</label><input type="text" id="rvName" placeholder="Ama Mensah" required /></div>
+          <div class="rf-g"><label>Location</label><input type="text" id="rvLoc" placeholder="Kumasi, Ghana" required /></div>
+        </div>
+        <div class="rf-g"><label>Product Reviewed</label><select id="rvProduct"></select></div>
+        <div class="rf-g">
+          <label>Your Rating</label>
+          <div class="star-picker" id="starPicker">
+            <span class="sp" data-v="1">★</span><span class="sp" data-v="2">★</span>
+            <span class="sp" data-v="3">★</span><span class="sp" data-v="4">★</span>
+            <span class="sp" data-v="5">★</span>
+          </div>
+          <input type="hidden" id="rvStars" value="5" />
+        </div>
+        <div class="rf-g"><label>Your Review</label><textarea id="rvText" rows="4" placeholder="Tell us how the product worked for you…" required></textarea></div>
+        <button type="submit" class="btn-gold">Submit Review ✦</button>
+      </form>
+    </div>
+
+  </div>
+</div><!-- /page-reviews -->
+
+
+<!-- ══════════════════════════════════════
+     PAGE: CONTACT
+══════════════════════════════════════ -->
+<div id="page-contact" class="page">
+
+  <div class="page-hero contact-hero">
+    <div class="animate-up">
+      <div class="pill-tag light">✦ Get In Touch</div>
+      <h1>We're Here For You</h1>
+      <p>Questions about products? Want to be a stockist? Let's talk.</p>
+    </div>
+  </div>
+
+  <div class="section-wrap">
+    <div class="contact-layout">
+
+      <div class="contact-info animate-up">
+        <h3>Contact Details</h3>
+        <p>Our team in Kumasi is ready to help you find the perfect hair care routine. Reach out anytime during business hours.</p>
+        <div class="info-items" id="contactInfoItems"></div>
+        <div class="contact-socials">
+          <h5>Follow Us</h5>
+          <div class="soc-row">
+            <a class="soc-btn" href="#">📷 Instagram</a>
+            <a class="soc-btn" href="#">f Facebook</a>
+            <a class="soc-btn" href="#">♪ TikTok</a>
+            <a class="soc-btn" href="#">💬 WhatsApp</a>
+          </div>
+        </div>
+        <div class="fda-block">
+          <span class="fda-ico">🏥</span>
+          <div>
+            <strong>FDA Vetted &amp; Approved</strong>
+            <p>All Ideal Hair products meet the highest Ghana FDA safety and quality standards.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-wrap animate-up">
+        <form class="contact-form" id="contactForm" onsubmit="submitContact(event)">
+          <div class="cf-row">
+            <div class="cf-g"><label>First Name</label><input type="text" placeholder="Ama" required /></div>
+            <div class="cf-g"><label>Last Name</label><input type="text" placeholder="Asante" required /></div>
+          </div>
+          <div class="cf-g"><label>Email Address</label><input type="email" placeholder="you@example.com" required /></div>
+          <div class="cf-g"><label>Phone (optional)</label><input type="tel" placeholder="+233 XX XXX XXXX" /></div>
+          <div class="cf-g">
+            <label>Subject</label>
+            <select>
+              <option>General Enquiry</option>
+              <option>Product Question</option>
+              <option>Order Support</option>
+              <option>Wholesale / Become a Stockist</option>
+              <option>Partnership</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="cf-g"><label>Message</label><textarea rows="5" placeholder="How can we help you?" required></textarea></div>
+          <button type="submit" class="btn-gold full-w">Send Message ✉️</button>
+          <p class="form-note">We respond within 24 hours on business days.</p>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Map block -->
+    <div class="map-block animate-up">
+      <div class="map-content">
+        <div class="map-pin-ico">📍</div>
+        <h4>Visit Us in Kumasi</h4>
+        <p>Ashanti Region, Ghana</p>
+        <p class="map-note">Walk-in consultations available Mon – Sat, 8am – 6pm</p>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /page-contact -->
+
+
+<!-- ══════════════════════════════════════
+     CART SIDEBAR
+══════════════════════════════════════ -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<aside class="cart-sidebar" id="cartSidebar">
+  <div class="cs-head">
+    <h3>Your Cart 🛒</h3>
+    <button class="cs-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cs-body" id="csBody"></div>
+  <div class="cs-foot" id="csFoot"></div>
+</aside>
+
+
+<!-- ══════════════════════════════════════
+     PRODUCT QUICK-VIEW MODAL
+══════════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+<div class="product-modal" id="productModal">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <div class="modal-inner" id="modalInner"></div>
+</div>
+
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="logo-mark sm">IH</div>
+        <span>Ideal Hair Products</span>
+      </div>
+      <p>Vegan, organic hair care rooted in African tradition. FDA vetted and approved. Proudly made in Kumasi, Ghana.</p>
+      <div class="footer-soc">
+        <a href="#">📷</a><a href="#">f</a><a href="#">♪</a><a href="#">💬</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Products</h5>
+      <ul id="footerProductLinks"></ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#" onclick="showPage('about')">About Us</a></li>
+        <li><a href="#" onclick="showPage('reviews')">Customer Reviews</a></li>
+        <li><a href="#" onclick="showPage('contact')">Contact Us</a></li>
+        <li><a href="#" onclick="showPage('contact')">Become a Stockist</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Support</h5>
+      <ul>
+        <li><a href="#" onclick="showPage('contact')">Shipping Info</a></li>
+        <li><a href="#" onclick="showPage('contact')">Returns Policy</a></li>
+        <li><a href="#" onclick="showPage('contact')">Hair Care Tips</a></li>
+        <li><a href="#" onclick="showPage('contact')">Privacy Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Ideal Hair Products. All rights reserved. Made with ❤️ in Kumasi, Ghana.</p>
+    <div class="fda-cert">FDA Vetted &amp; Approved ✓</div>
+  </div>
+</footer>
+
+<!-- ✅ SCRIPTS — data.js must load before app.js -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
