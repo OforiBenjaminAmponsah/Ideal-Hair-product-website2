@@ -341,14 +341,14 @@
       <div class="contact-form-wrap animate-up">
         <form class="contact-form" id="contactForm" onsubmit="submitContact(event)">
           <div class="cf-row">
-            <div class="cf-g"><label>First Name</label><input type="text" placeholder="Ama" required /></div>
-            <div class="cf-g"><label>Last Name</label><input type="text" placeholder="Asante" required /></div>
+            <div class="cf-g"><label>First Name</label><input type="text" id="cfName" placeholder="Ama" required /></div>
+            <div class="cf-g"><label>Last Name</label><input type="text" id="cfLastName" placeholder="Asante" required /></div>
           </div>
-          <div class="cf-g"><label>Email Address</label><input type="email" placeholder="you@example.com" required /></div>
-          <div class="cf-g"><label>Phone (optional)</label><input type="tel" placeholder="+233 XX XXX XXXX" /></div>
+          <div class="cf-g"><label>Email Address</label><input type="email" id="cfEmail" placeholder="you@example.com" required /></div>
+          <div class="cf-g"><label>Phone (optional)</label><input type="tel" id="cfPhone" placeholder="+233 XX XXX XXXX" /></div>
           <div class="cf-g">
             <label>Subject</label>
-            <select>
+            <select id="cfSubject">
               <option>General Enquiry</option>
               <option>Product Question</option>
               <option>Order Support</option>
@@ -357,7 +357,7 @@
               <option>Other</option>
             </select>
           </div>
-          <div class="cf-g"><label>Message</label><textarea rows="5" placeholder="How can we help you?" required></textarea></div>
+          <div class="cf-g"><label>Message</label><textarea id="cfMsg" rows="5" placeholder="How can we help you?" required></textarea></div>
           <button type="submit" class="btn-gold full-w">Send Message ✉️</button>
           <p class="form-note">We respond within 24 hours on business days.</p>
         </form>

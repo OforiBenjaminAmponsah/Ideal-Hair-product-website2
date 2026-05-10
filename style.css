@@ -681,6 +681,45 @@ input, select, textarea { font-family: inherit; font-size: 15px; outline: none; 
 .order-success h4 { color: var(--g-dark); font-size: 18px; margin-bottom: 8px; }
 .order-success p { color: var(--g-mid); font-size: 14px; }
 
+/* Location selects */
+.loc-select-wrap { position: relative; width: 100%; }
+.loc-select-wrap::after {
+  content: '▾';
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--g-mid); font-size: 14px; pointer-events: none;
+}
+.loc-select {
+  appearance: none; -webkit-appearance: none;
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 11px 36px 11px 14px;
+  width: 100%; font-family: inherit; font-size: 15px;
+  color: var(--txt); cursor: pointer;
+  transition: var(--trans);
+}
+.loc-select:focus { border-color: var(--g-mid); outline: none; box-shadow: 0 0 0 3px rgba(45,106,69,0.12); }
+.loc-select option { color: var(--txt); }
+.loc-select option:first-child { color: var(--txt-mute); }
+
+/* Payment options */
+.payment-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
+.pay-opt {
+  cursor: pointer; border: 2px solid var(--border);
+  border-radius: 12px; transition: border-color .2s, background .2s;
+}
+.pay-opt:has(input:checked) { border-color: var(--gold); background: #fffdf5; }
+.pay-opt input[type=radio] { display: none; }
+.pay-opt-inner { display: flex; align-items: center; gap: 12px; padding: 13px 14px; }
+.pay-opt-ico { font-size: 22px; flex-shrink: 0; }
+.pay-opt-title { font-weight: 700; font-size: 14px; color: var(--g-dark); }
+.pay-opt-sub { font-size: 12px; color: var(--txt-mute); margin-top: 2px; }
+.pay-opt-check {
+  margin-left: auto; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--gold); color: var(--g-dark);
+  display: none; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 900; flex-shrink: 0;
+}
+.pay-opt:has(input:checked) .pay-opt-check { display: flex; }
+
 /* ═══════════════════════════════════════════════════
    PRODUCT MODAL
 ═══════════════════════════════════════════════════ */

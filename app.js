@@ -23,10 +23,22 @@ let selectedStars  = 5;
 let currentReviewFilter = 'All Products';
 let modalOpen      = false;
 
+const API_URL = 'http://localhost:5000/api';
+
 /* ══════════════════════════════════════
    INIT — runs when DOM is ready
 ══════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const pRes = await fetch(`${API_URL}/products`);
+    PRODUCTS = await pRes.json();
+    
+    const rRes = await fetch(`${API_URL}/reviews`);
+    REVIEWS = await rRes.json();
+  } catch (err) {
+    console.error("Failed to fetch data from API:", err);
+  }
+
   renderHome();
   renderFilterBar();
   renderProducts();
@@ -332,7 +344,7 @@ function setReviewFilter(name, btn) {
   }
 }
 
-function submitReview(e) {
+async function submitReview(e) {
   e.preventDefault();
   const name    = document.getElementById('rvName').value.trim();
   const loc     = document.getElementById('rvLoc').value.trim();
@@ -345,15 +357,29 @@ function submitReview(e) {
     return;
   }
 
-  addReview({ name, loc, product, text, stars });
-  renderReviews();
-  e.target.reset();
-  selectedStars = 5;
-  setupStarPicker();
-  showToast('✓ Thank you! Your review has been added.');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  if (currentPage === 'reviews') {
-    setTimeout(triggerVisibleAnimations, 50);
+  try {
+    await fetch(`${API_URL}/reviews`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, loc, product, text, stars })
+    });
+
+    // Refresh reviews from server
+    const rRes = await fetch(`${API_URL}/reviews`);
+    REVIEWS = await rRes.json();
+    
+    renderReviews();
+    e.target.reset();
+    selectedStars = 5;
+    setupStarPicker();
+    showToast('✓ Thank you! Your review has been added.');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (currentPage === 'reviews') {
+      setTimeout(triggerVisibleAnimations, 50);
+    }
+  } catch (err) {
+    showToast('❌ Error submitting review.');
+    console.error(err);
   }
 }
 
@@ -406,10 +432,24 @@ function renderContact() {
     </div>`).join('');
 }
 
-function submitContact(e) {
+async function submitContact(e) {
   e.preventDefault();
-  showToast("✉️ Message sent! We'll respond within 24 hours.");
-  e.target.reset();
+  const firstName = document.getElementById('cfName').value.trim();
+  const lastName = document.getElementById('cfLastName').value.trim();
+  const name = `${firstName} ${lastName}`.trim();
+  const email = document.getElementById('cfEmail').value.trim();
+  const message = document.getElementById('cfMsg').value.trim();
+  try {
+    await fetch(`${API_URL}/contact`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, message })
+    });
+    showToast("✉️ Message sent! We'll respond within 24 hours.");
+    e.target.reset();
+  } catch (err) {
+    showToast('❌ Error sending message.');
+  }
 }
 
 /* ══════════════════════════════════════
@@ -498,23 +538,52 @@ function renderCart() {
       <button class="cs-remove" onclick="removeFromCart(${item.id})" title="Remove">🗑</button>
     </div>`).join('');
 
-  if (!document.getElementById('checkoutBtn')) {
-    foot.innerHTML = `
-      <div class="cs-total">
-        <span>Subtotal</span>
-        <span class="cs-total-amt" id="cartSubtotal">GH₵${subtotal}</span>
-      </div>
-      <button id="checkoutBtn" class="btn-gold full-w" onclick="showCheckoutForm()">
-        Proceed to Checkout →
-      </button>
-      <button class="btn-ghost dark-ghost full-w" style="margin-top:12px" onclick="closeCart()">
-        ← Continue Shopping
-      </button>
-      <div id="checkoutWrap"></div>`;
-  } else {
-    const subtotalEl = document.getElementById('cartSubtotal');
-    if (subtotalEl) subtotalEl.textContent = `GH₵${subtotal}`;
-  }
+  // Always re-render footer fresh (handles post-order new cart correctly)
+  foot.innerHTML = `
+    <div class="cs-total">
+      <span>Subtotal</span>
+      <span class="cs-total-amt" id="cartSubtotal">GH₵${subtotal}</span>
+    </div>
+    <button id="checkoutBtn" class="btn-gold full-w" onclick="showCheckoutForm()">
+      Proceed to Checkout →
+    </button>
+    <button class="btn-ghost dark-ghost full-w" style="margin-top:12px" onclick="closeCart()">
+      ← Continue Shopping
+    </button>
+    <div id="checkoutWrap"></div>`;
+}
+
+/* ══════════════════════════════════════
+   GHANA LOCATION DATA
+══════════════════════════════════════ */
+const GHANA_LOCATIONS = {
+  'Greater Accra': ['Accra', 'Tema', 'Madina', 'Kasoa', 'Adenta', 'Ashaiman', 'Dome', 'Achimota', 'Teshie', 'Nungua', 'Dansoman', 'Korle-Bu', 'Cantonments', 'Osu', 'La', 'Labadi', 'Prampram', 'Dodowa'],
+  'Ashanti': ['Kumasi', 'Obuasi', 'Ejisu', 'Konongo', 'Mampong', 'Bekwai', 'Juaben', 'Asokwa', 'Suame', 'Manhyia', 'Tafo', 'Bantama', 'Nhyiaeso'],
+  'Western': ['Takoradi', 'Sekondi', 'Tarkwa', 'Axim', 'Prestea', 'Bogoso', 'Shama', 'Agona Nkwanta', 'Halfassini'],
+  'Western North': ['Sefwi Wiawso', 'Bibiani', 'Enchi', 'Juaboso', 'Bia'],
+  'Central': ['Cape Coast', 'Kasoa', 'Winneba', 'Saltpond', 'Mankessim', 'Assin Fosu', 'Elmina', 'Apam', 'Swedru'],
+  'Eastern': ['Koforidua', 'Nkawkaw', 'Akosombo', 'Asamankese', 'Nsawam', 'Suhum', 'Oda', 'Kade', 'Aburi', 'Somanya'],
+  'Volta': ['Ho', 'Hohoe', 'Keta', 'Aflao', 'Sogakope', 'Kpandu', 'Denu', 'Anloga'],
+  'Oti': ['Dambai', 'Jasikan', 'Kadjebi', 'Nkwanta'],
+  'Northern': ['Tamale', 'Savelugu', 'Yendi', 'Bimbilla', 'Gushegu', 'Karaga'],
+  'North East': ['Nalerigu', 'Walewale', 'Gambaga', 'Chereponi'],
+  'Savannah': ['Damongo', 'Bole', 'Salaga', 'Sawla'],
+  'Upper East': ['Bolgatanga', 'Bawku', 'Navrongo', 'Zebilla', 'Paga'],
+  'Upper West': ['Wa', 'Lawra', 'Tumu', 'Nandom', 'Jirapa'],
+  'Bono': ['Sunyani', 'Berekum', 'Dormaa Ahenkro', 'Wenchi', 'Techiman'],
+  'Bono East': ['Techiman', 'Nkoranza', 'Atebubu', 'Kintampo'],
+  'Ahafo': ['Goaso', 'Kukuom', 'Acherensua', 'Bechem']
+};
+
+/* When region changes, repopulate the town select */
+function onRegionChange() {
+  const regionSel = document.getElementById('coRegion');
+  const citySel   = document.getElementById('coCity');
+  if (!regionSel || !citySel) return;
+  const towns = GHANA_LOCATIONS[regionSel.value] || [];
+  citySel.innerHTML = '<option value="">Select Town / City</option>' +
+    towns.map(t => `<option value="${t}">${t}</option>`).join('');
+  citySel.disabled = towns.length === 0;
 }
 
 function showCheckoutForm() {
@@ -528,68 +597,123 @@ function showCheckoutForm() {
     return;
   }
 
+  const regionOptions = Object.keys(GHANA_LOCATIONS)
+    .map(r => `<option value="${r}">${r}</option>`).join('');
+
   wrap.innerHTML = `
     <div class="checkout-wrap">
       <h4>Delivery Details</h4>
       <div class="co-fields">
-        <input class="co-input" type="text"  id="coName"    placeholder="Full Name"       required />
+        <input class="co-input" type="text"  id="coName"    placeholder="Full Name" required />
         <input class="co-input" type="tel"   id="coPhone"   placeholder="Phone / WhatsApp" required />
-        <input class="co-input" type="text"  id="coAddress" placeholder="Delivery Address" required />
-        <div class="co-row">
-          <input class="co-input" type="text" id="coCity"   placeholder="City" />
-          <input class="co-input" type="text" id="coRegion" placeholder="Region" />
+        <input class="co-input" type="text"  id="coAddress" placeholder="Street / House No." required />
+
+        <div class="loc-select-wrap">
+          <select class="loc-select" id="coRegion" onchange="onRegionChange()">
+            <option value="">🗺️ Select Region</option>
+            ${regionOptions}
+          </select>
         </div>
-        <button class="btn-gold full-w" onclick="placeOrder()">Place Order 🎉</button>
+
+        <div class="loc-select-wrap">
+          <select class="loc-select" id="coCity" disabled>
+            <option value="">🏘️ Select Town / City</option>
+          </select>
+        </div>
+
+        <h4 style="margin:14px 0 8px;font-size:14px;color:var(--g-dark)">💳 Payment Method</h4>
+        <div class="payment-options">
+          <label class="pay-opt">
+            <input type="radio" name="payMethod" value="delivery" checked />
+            <div class="pay-opt-inner">
+              <div class="pay-opt-ico">🏠</div>
+              <div>
+                <div class="pay-opt-title">Pay on Delivery</div>
+                <div class="pay-opt-sub">Cash when your order arrives</div>
+              </div>
+              <div class="pay-opt-check">✓</div>
+            </div>
+          </label>
+          <label class="pay-opt">
+            <input type="radio" name="payMethod" value="online" />
+            <div class="pay-opt-inner">
+              <div class="pay-opt-ico">📱</div>
+              <div>
+                <div class="pay-opt-title">Pay Online</div>
+                <div class="pay-opt-sub">Mobile Money / Card (Paystack)</div>
+              </div>
+              <div class="pay-opt-check">✓</div>
+            </div>
+          </label>
+        </div>
+
+        <button class="btn-gold full-w" style="margin-top:14px" onclick="placeOrder()">Place Order 🎉</button>
       </div>
       <div class="order-success" id="orderSuccess" style="display:none">
         <div style="font-size:40px;margin-bottom:10px">🎉</div>
         <h4>Order Confirmed!</h4>
-        <p>Thank you! We'll contact you on WhatsApp to arrange delivery.</p>
+        <p>We'll contact you on WhatsApp to arrange delivery.</p>
       </div>
     </div>`;
 
   wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function placeOrder() {
+async function placeOrder() {
   const name    = document.getElementById('coName')?.value.trim();
   const phone   = document.getElementById('coPhone')?.value.trim();
   const address = document.getElementById('coAddress')?.value.trim();
+  const region  = document.getElementById('coRegion')?.value;
+  const city    = document.getElementById('coCity')?.value;
 
-  if (!name || !phone || !address) {
-    showToast('⚠️ Please fill in your name, phone and address');
+  if (!name || !phone || !address || !region || !city) {
+    showToast('⚠️ Please fill in all delivery details including Region and City');
     return;
   }
 
-  // Save order via data layer
-  OrderStore.save({
-    customer: { name, phone, address,
-      city:   document.getElementById('coCity')?.value,
-      region: document.getElementById('coRegion')?.value
-    },
-    items:    cart.map(i => ({ id: i.id, name: i.name, qty: i.qty, price: i.price })),
-    total:    cart.reduce((s, i) => s + i.price * i.qty, 0)
-  });
+  const payRadio = document.querySelector('input[name="payMethod"]:checked');
+  const payment_method = payRadio ? payRadio.value : 'delivery';
 
-  // Clear cart
-  cart = [];
-  CartStore.save(cart);
-  updateBadge();
+  const orderData = {
+    name, phone, address, city, region,
+    items: cart.map(i => ({ id: i.id, name: i.name, qty: i.qty, price: i.price, category: i.category })),
+    total: cart.reduce((s, i) => s + i.price * i.qty, 0),
+    payment_method
+  };
 
-  // Show success
-  const success = document.getElementById('orderSuccess');
-  const fields  = document.querySelector('.co-fields');
-  if (success) success.style.display = 'block';
-  if (fields)  fields.style.display  = 'none';
+  try {
+    if (payment_method === 'online') {
+      showToast('📱 Redirecting to payment...');
+      // TODO: integrate Paystack here
+    }
 
-  // Update cart body
-  const body = document.getElementById('csBody');
-  if (body) body.innerHTML = `
-    <div class="cs-empty">
-      <div class="cs-empty-ico" style="font-size:64px">🎉</div>
-      <p style="font-size:17px;font-weight:600;color:var(--g-dark)">Order placed, ${name}!</p>
-      <p style="margin-top:8px">We'll reach out on WhatsApp to confirm your delivery.</p>
-    </div>`;
+    await fetch(`${API_URL}/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData)
+    });
+
+    // Clear cart and fully reset footer so next cart is fresh
+    cart = [];
+    CartStore.save(cart);
+    updateBadge();
+    const foot = document.getElementById('csFoot');
+    if (foot) foot.innerHTML = '';
+
+    const payLabel = payment_method === 'online' ? 'Paid Online' : 'Pay on Delivery';
+    const body = document.getElementById('csBody');
+    if (body) body.innerHTML = `
+      <div class="cs-empty">
+        <div class="cs-empty-ico" style="font-size:64px">🎉</div>
+        <p style="font-size:17px;font-weight:600;color:var(--g-dark)">Order placed, ${name}!</p>
+        <p style="margin-top:8px">Payment: <strong>${payLabel}</strong></p>
+        <p style="margin-top:4px">We'll reach out on WhatsApp to confirm your delivery.</p>
+        <button class="btn-gold" style="margin-top:20px" onclick="closeCart()">← Continue Shopping</button>
+      </div>`;
+  } catch (err) {
+    showToast('❌ Error placing order. Please try again.');
+    console.error(err);
+  }
 }
 
 function openCart() {
